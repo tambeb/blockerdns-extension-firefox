@@ -1,0 +1,1 @@
+# blockerdns-extension-firefox
