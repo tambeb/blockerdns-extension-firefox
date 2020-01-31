@@ -4,7 +4,7 @@ const MDCSwitchFoundation = mdc.switch.MDCSwitchFoundation;
 const switchControl = new MDCSwitch( document.querySelector( '.mdc-switch' ) );
 
 function update() {
-    chrome.storage.sync.get( [ 'active' ], function ( result ) {
+    chrome.storage.local.get( [ 'active' ], function ( result ) {
         active = result.active;
         if ( result.active ) {
             document.getElementById( 'active' ).innerHTML = 'Ad blocking is ON';
@@ -20,7 +20,7 @@ function update() {
 }
 
 function toggleActive() {
-    chrome.storage.sync.set( { active: !active }, function () { } );
+    chrome.storage.local.set( { active: !active }, function () { } );
     active = !active;
     update();
 }

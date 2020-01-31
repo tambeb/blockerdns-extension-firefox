@@ -6,20 +6,20 @@ const redirector = function () {
 
 function activate() {
     active = true;
-    chrome.browserAction.setIcon( { path: 'img/icon_16.png' } );
-    chrome.browserAction.setTitle( { title: 'blockerDNS is currently running' } );
+    browser.browserAction.setIcon( { path: 'img/icon_16.png' } );
+    browser.browserAction.setTitle( { title: 'blockerDNS is currently running' } );
     activateRedirector();
 }
 
 function deactivate() {
     active = false;
-    chrome.browserAction.setIcon( { path: 'img/icon_bw_16.png' } );
-    chrome.browserAction.setTitle( { title: 'blockerDNS is turned off' } );
+    browser.browserAction.setIcon( { path: 'img/icon_bw_16.png' } );
+    browser.browserAction.setTitle( { title: 'blockerDNS is turned off' } );
     deactivateRedirector();
 }
 
 function activateRedirector() {
-    chrome.webRequest.onBeforeRequest.addListener(
+    browser.webRequest.onBeforeRequest.addListener(
         redirector,
         {
             urls: adDomains
@@ -28,7 +28,7 @@ function activateRedirector() {
 }
 
 function deactivateRedirector() {
-    chrome.webRequest.onBeforeRequest.removeListener( redirector );
+    browser.webRequest.onBeforeRequest.removeListener( redirector );
 }
 
 chrome.storage.local.set( { adDomainsVersion: adDomainsVersion, checkBlockListUpdate: false }, function () { } );
@@ -42,13 +42,13 @@ function checkForHostsUpdates() {
         if ( adDomainsVersion != data.version ) {
             let wasActive = active;
             if ( active ) {
-                chrome.storage.sync.set( { active: false }, function () { } );
+                chrome.storage.local.set( { active: false }, function () { } );
             }
             adDomains = data.adDomains;
             adDomainsVersion = data.version;
             chrome.storage.local.set( { adDomainsVersion: data.version }, function () { } );
             if ( wasActive ) {
-                chrome.storage.sync.set( { active: true }, function () { } );
+                chrome.storage.local.set( { active: true }, function () { } );
             }
         }
         chrome.storage.local.set( { checkBlockListUpdate: false }, function () { } );
@@ -56,7 +56,7 @@ function checkForHostsUpdates() {
     xhr.send();
 }
 
-chrome.storage.sync.get( [ 'active' ], function ( result ) {
+chrome.storage.local.get( [ 'active' ], function ( result ) {
     if ( result.active == true ) {
         activate();
     }
@@ -64,7 +64,7 @@ chrome.storage.sync.get( [ 'active' ], function ( result ) {
         deactivate();
     }
     else {
-        chrome.storage.sync.set( { active: true }, function () {
+        chrome.storage.local.set( { active: true }, function () {
             activate();
         } );
     }
