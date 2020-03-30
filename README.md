@@ -11,4 +11,4 @@ If you want to modify the code or play around with it, you can sideload it into 
 ```
 git clone https://github.com/tambeb/blockerdns-extension-firefox.git
 ```
-Then go to Firefox's extension settings by typing __about:debugging__ in the address bar, going to __This Firefox__, clicking __Load Temporary Add-on...__ and selecting manifest.json from the extracted or cloned folder.
+Then go to Firefox's extension settings and sideload it by typing __about:debugging__ in the address bar, going to __This Firefox__, clicking __Load Temporary Add-on...__ and selecting manifest.json from the extracted or cloned folder.
